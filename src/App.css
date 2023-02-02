@@ -207,3 +207,7 @@ input:focus {
   background: linear-gradient(#e3e7e7, #eef5f5);
   color: black;
 }
+
+.btn-close {
+  display: none;
+}

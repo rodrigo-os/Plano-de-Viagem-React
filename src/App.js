@@ -32,13 +32,12 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [travels, setTravels] = useState([]);
-
   const [fromAddress, setFromAddress] = useState({});
   const [toAddress, setToAddress] = useState({});
-
   const fromSearchInput = useRef(null);
   const toSearchInput = useRef(null);
-
+  const [selectedTravel, setSelectedTravel] = useState();
+  
   const initMapScript = () => {
     if(window.google) {
       return Promise.resolve();
@@ -92,7 +91,6 @@ function App() {
   }
   
   function traceRoute(type){
-    console.log(type)
     var service = new window.google.maps.DistanceMatrixService();
     return service.getDistanceMatrix(
       {
@@ -109,6 +107,8 @@ function App() {
       var duration = response.rows[0].elements[0].duration;
       if(type == "create"){
         createTravel(distance.text, duration.text);
+      }else if(type == "update"){
+        updateTravel(distance.text, duration.text);
       }
     });
   }
@@ -140,6 +140,34 @@ function App() {
   async function deleteTravel(travel){
     await axios.delete(`http://localhost:3333/travel/${travel._id}`);
     getTravels();
+    setSelectedTravel(undefined);
+  }
+
+  async function updateTravel(distance, duration){
+    let travel = {
+      _id:selectedTravel._id,
+      from:{
+        city: fromAddress.city,
+        state: fromAddress.state,
+      },
+      to:{
+        city: toAddress.city,
+        state: toAddress.state,
+      },
+      distance:distance,
+      duration:duration,
+    }
+
+    await axios.put("http://localhost:3333/travel", {
+      travel
+    });
+    getTravels();
+    setSelectedTravel(undefined);
+    handleClose();
+  }
+
+  async function selectTravel(travel){
+    setSelectedTravel(travel);
   }
 
   useEffect(()=>{
@@ -189,7 +217,11 @@ function App() {
                           <button onClick = {()=>deleteTravel(travel)}className='deleteButton'>
                             <AiFillDelete size={19}></AiFillDelete>
                           </button>
-                          <button className='updateButton'>
+                          <button onClick = {()=>{
+                            selectTravel(travel)
+                            handleShow();
+                            initMapScript().then(()=>initAutocomplete());
+                          }}className='updateButton'>
                             <AiFillEdit size={19}></AiFillEdit>
                           </button>
                         </Card.Text>
@@ -222,11 +254,16 @@ function App() {
           <input className="inputModal" id={"to"} ref={toSearchInput} type="text" placeholder="Destino"></input>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={()=>{
+            handleClose();
+            setSelectedTravel(undefined);
+          }}>
             Fechar
           </Button>
           <Button onClick={()=>{
-            traceRoute("create")
+            selectedTravel
+              ? traceRoute("update")
+              : traceRoute("create")
           }} variant="primary">Salvar</Button>
         </Modal.Footer>
       </Modal>
