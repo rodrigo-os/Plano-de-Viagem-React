@@ -175,12 +175,29 @@ function App() {
     getTravels();
   },[]);
 
+  const dragItem=React.useRef(null);
+  const dragOverItem=React.useRef(null);
+  
+  const handleSort=()=>{
+    let _travels=[...travels];
+    const draggedItemContent=_travels.splice(dragItem.current, 1)[0];
+    _travels.splice(dragOverItem.current, 0, draggedItemContent);
+    dragItem.current=null;
+    dragOverItem.current=null;
+    setTravels(_travels);
+  }
+
   const Travels = ({travels}) =>{
     return (
       <div className='travels'>
-        {travels.map(travel =>{
+        {travels.map((travel, index) =>{
           return (
-            <div className='travel'>
+            <div className='travel' draggable={true} 
+              onDragStart={(e) => dragItem.current=index}
+              onDragEnter={(e)=> dragOverItem.current=index}
+              onDragEnd={handleSort}
+              onDragOver={(e)=>e.preventDefault()}
+            >
               <Accordion>
                 <Accordion.Item eventKey="0">
                   <Accordion.Header className='Accordion-Header'>
