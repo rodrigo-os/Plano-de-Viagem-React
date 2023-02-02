@@ -51,14 +51,9 @@ function App() {
     let sample = {
       city: "",
       state: "",
-      long: 0,
-      lat: 0,
     }
     const place = autocomplete.getPlace();
     const placeType = inputType;
-    sample.long = place.geometry.viewport.Ia.hi;
-    sample.lat = place.geometry.viewport.Ya.hi;
-
     place.address_components.forEach(addressComponent =>{
       const types = addressComponent.types;
       const long_name = addressComponent.long_name;
@@ -72,7 +67,7 @@ function App() {
         sample.state = short_name;
       }
     });
-    if(placeType = "FROM"){
+    if(placeType == "FROM"){
       setFromAddress(sample);
     }else{
       setToAddress(sample);
@@ -83,28 +78,63 @@ function App() {
     if(!fromSearchInput.current){
       return
     }else{
-      const fromAutocomplete = new window.google.maps.places.Autocomplete(
-        fromSearchInput.current);
-      fromAutocomplete.setFields(["address_component", "geometry"]);
-      fromAutocomplete.addListener("places_changed", ()=>{
-        onChangeAddress(fromAutocomplete, "FROM");
-      });
+      const fromAutoComplete = new window.google.maps.places.Autocomplete(fromSearchInput.current);
+      fromAutoComplete.setFields(["address_component", "geometry"]);
+      fromAutoComplete.addListener("place_changed", ()=> onChangeAddress(fromAutoComplete, "FROM"));
     }
     if(!toSearchInput.current){
       return
     }else{
-      const toAutocomplete = new window.google.maps.places.Autocomplete(
-        toSearchInput.current);
-      toAutocomplete.setFields(["address_component", "geometry"]);
-      toAutocomplete.addListener("place_changed", ()=>{
-        onChangeAddress(toAutocomplete, "TO");
-      });
+      const toAutoComplete = new window.google.maps.places.Autocomplete(toSearchInput.current);
+      toAutoComplete.setFields(["address_component", "geometry"]);
+      toAutoComplete.addListener("place_changed", () => onChangeAddress(toAutoComplete, "TO"));
     }
   }
   
+  function traceRoute(type){
+    console.log(type)
+    var service = new window.google.maps.DistanceMatrixService();
+    return service.getDistanceMatrix(
+      {
+        origins: [`${fromAddress.city},${fromAddress.state}`],
+        destinations: [`${toAddress.city},${toAddress.state}`],
+        travelMode: window.google.maps.TravelMode.DRIVING,
+        unitSystem: window.google.maps.UnitSystem.metric,
+        avoidHighways: false,
+        avoidTolls: false,
+      },
+    )
+    .then(response =>{
+      var distance = response.rows[0].elements[0].distance;
+      var duration = response.rows[0].elements[0].duration;
+      if(type == "create"){
+        createTravel(distance.text, duration.text);
+      }
+    });
+  }
+
   async function getTravels() {
     const response = await axios.get("http://localhost:3333/travels")
     setTravels(response.data);
+  }
+
+  async function createTravel(distance, duration){
+    let travel = {
+      from:{
+        city: fromAddress.city,
+        state: fromAddress.state,
+      },
+      to:{
+        city: toAddress.city,
+        state: toAddress.state,
+      },
+      distance: distance,
+      duration: duration,
+    }
+
+    await axios.post("http://localhost:3333/travel", {travel:travel});
+    getTravels();
+    handleClose();
   }
 
   useEffect(()=>{
@@ -143,11 +173,11 @@ function App() {
                         <Card.Title class="AccordionCardTitle">
                           <div className='distance'>
                             <AiOutlineCar size={19}></AiOutlineCar>
-                            <p>{`Distância: ${travel.travel.travel_distance}`}</p>
+                            <p>{`Distância: ${travel.travel.distance}`}</p>
                           </div>
                           <div className="duration">
                             <AiOutlineHourglass size={19}></AiOutlineHourglass>
-                            <p>{`Tempo de viagem: ${travel.travel.travel_duration}`}</p>
+                            <p>{`Tempo de viagem: ${travel.travel.duration}`}</p>
                           </div>
                         </Card.Title>
                         <Card.Text class="AccordionCardText">
@@ -183,14 +213,16 @@ function App() {
             Viagem</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <input className="inputModal" ref={fromSearchInput} placeholder='Origem'></input>
-          <input className="inputModal" ref={toSearchInput} placeholder="Destino"></input>
+          <input className="inputModal" id={"from"} ref={fromSearchInput} type="text" placeholder='Origem'></input>
+          <input className="inputModal" id={"to"} ref={toSearchInput} type="text" placeholder="Destino"></input>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Fechar
           </Button>
-          <Button variant="primary">Salvar</Button>
+          <Button onClick={()=>{
+            traceRoute("create")
+          }} variant="primary">Salvar</Button>
         </Modal.Footer>
       </Modal>
       <header className="container_travels">
