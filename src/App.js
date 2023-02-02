@@ -137,6 +137,11 @@ function App() {
     handleClose();
   }
 
+  async function deleteTravel(travel){
+    await axios.delete(`http://localhost:3333/travel/${travel._id}`);
+    getTravels();
+  }
+
   useEffect(()=>{
     initMapScript().then(()=>initAutocomplete());
     getTravels();
@@ -181,7 +186,7 @@ function App() {
                           </div>
                         </Card.Title>
                         <Card.Text class="AccordionCardText">
-                          <button className='deleteButton'>
+                          <button onClick = {()=>deleteTravel(travel)}className='deleteButton'>
                             <AiFillDelete size={19}></AiFillDelete>
                           </button>
                           <button className='updateButton'>
