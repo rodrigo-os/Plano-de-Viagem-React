@@ -11,12 +11,35 @@ import {
   AiOutlineCar,AiFillDelete,AiFillEdit,
 } from "react-icons/ai";
 
+const apiKey = "AIzaSyDe5Y3eEHSV0KMJO8KqmBa4vofh0ju1VPg";
+const mapApiJS = "https://maps.googleapis.com/maps/api/js";
+
+function loadAsyncScript(src) {
+  return new Promise(resolve =>{
+    const script = document.createElement("script");
+    Object.assign(script, {
+      type: "text/javascript",
+      async: true,
+      src
+    });
+    script.addEventListener("load", ()=> resolve(script));
+    document.head.appendChild(script);
+  });
+}
+
 function App() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [travels, setTravels] = useState([]);
+
+  const initMapScript = () => {
+    if(window.google) {
+      return Promise.resolve();
+    }
+    const src = `${mapApiJS}?key=${apiKey}&libraries=places&v=weekly`;
+    return loadAsyncScript(src);
+  }
   
   async function getTravels() {
     const response = await axios.get("http://localhost:3333/travels")
@@ -24,6 +47,7 @@ function App() {
   }
 
   useEffect(()=>{
+    initMapScript().then(()=>console.log("Map API Loaded"));
     getTravels();
   },[]);
 
