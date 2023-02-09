@@ -211,3 +211,28 @@ input:focus {
 .btn-close {
   display: none;
 }
+
+.filtering_container{
+  margin-top: -10px;
+  margin-bottom: 10px;
+  width: 800px;
+}
+
+.filtering_container input{
+  padding-left: 1%;
+  border: 1px solid #DDDDDD;
+  display: inline;
+  float: right;
+  border-radius: 5px 12px 12px 0px;
+}
+
+.filtering_container input:focus{
+  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+  border: 1px solid rgba(81, 203, 238, 1);
+}
+
+.filtering_container select{
+  display: inline;
+  float: left;
+  border-radius: 5px 12px 0px 0px;
+}

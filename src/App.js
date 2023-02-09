@@ -187,6 +187,22 @@ function App() {
     setTravels(_travels);
   }
 
+  async function search(element){
+    if(element.target.value.length == 0){
+      getTravels();
+      document.getElementById("select_options").style.visibility = "visible"
+    }else {
+      document.getElementById("select_options").style.visibility = "hidden"
+      const response = await axios.get(`http://localhost:3333/travels/search/${element.target.value}`);
+      setTravels(response.data)
+    }
+  }
+
+  async function order(){
+    const response = await axios.get(`http://localhost:3333/travels/order/${document.getElementById("select_options").value}`);
+    setTravels(response.data);
+  }
+
   const Travels = ({travels}) =>{
     return (
       <div className='travels'>
@@ -223,7 +239,7 @@ function App() {
                         <Card.Title class="AccordionCardTitle">
                           <div className='distance'>
                             <AiOutlineCar size={19}></AiOutlineCar>
-                            <p>{`Distância: ${travel.travel.distance}`}</p>
+                            <p>{`Distância: ${travel.travel.distance} km`} </p>
                           </div>
                           <div className="duration">
                             <AiOutlineHourglass size={19}></AiOutlineHourglass>
@@ -287,6 +303,14 @@ function App() {
       <header className="container_travels">
         <div className="header_travels">
           <h1>PLANO DE VIAGEM</h1>
+        </div>
+        <div className='filtering_container'>
+          <select onChange = {order} id={"select_options"}>
+            <option disabled>Distância</option>
+            <option>Menor</option>
+            <option>Maior</option>
+          </select>
+          <input onChange={(event) => {search(event)}} type="text" placeholder='Pesquisar...'/>
         </div>
         <Travels travels={travels}></Travels>
         <Modal></Modal>
