@@ -1,238 +1,299 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .pac-container{
   z-index: 999999;
+  @apply bg-gray-100;
 }
 
-.App {
-  text-align: center;
-}
+@layer components {
+  .travels_container {
+    @apply h-screen;
+    @apply bg-gradient-to-b;
+    @apply grid;
+    @apply grid-rows-6;
+    @apply grid-flow-row;
+    @apply from-gray-200;
+    @apply to-gray-100;
+    /* Dark Mode */
+    @apply dark:from-slate-800;
+    @apply dark:to-stone-800;
+  }
 
-.container_travels {
-  background: linear-gradient(#1b263b, #687896);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+  .travels_header {
+    @apply flex;
+    @apply justify-center;
+    @apply items-end;
+    @apply row-start-1;
+    @apply row-end-1;
+  }
 
-.header_travels {
-  background: linear-gradient(#6e86a0,#1e4169 );
-  width: 800px;
-  height: 60px;
-  box-shadow: 0px 0px 21px -7px rgba(0, 0, 0, 5);
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 1rem;
-  border-radius: 8px;
-  font-family: "Gill Sans", sans-serif;
-  text-shadow: 3px 3px #1b263b;
-}
+  .travels_body {
+    @apply flex;
+    @apply flex-col;
+    @apply justify-center;
+    @apply items-center;
+    @apply row-start-2;
+    @apply row-end-6;
+  }
 
-.header_travels h1 {
-  margin-top: 15px;
-  font-weight: bold;
-}
+  .filtering_container {
+    @apply w-5/6;
+    @apply lg:w-128;
+    @apply mb-2;
+    @apply py-1;
+    @apply grid;
+    @apply grid-rows-1;
+    @apply grid-flow-row;
+    @apply grid-cols-3;
+    @apply grid-flow-col;
+  }
 
-.travels {
-  background: linear-gradient(#e3e7e7, #eef5f5);
-  width: 800px;
-  height: 450px;
-  overflow-y: auto;
-  border-radius: 12px 5px 5px 12px;
-  box-shadow: 0px 0px 21px -7px rgba(0, 0, 0, 2);
-}
+  .filtering_order {
+    @apply col-start-1;
+    @apply flex;
+    @apply w-fit;
+    @apply select-none;
+  }
 
-.travel {
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 1rem;
-  margin-bottom: -1rem;
-  padding: 5px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .filtering_order select {
+    @apply ring-2;
+    @apply text-sm;
+    @apply px-2;
+    @apply py-1;
+    @apply h-fit;
+    @apply rounded-xl;
+    @apply font-semibold;
+    @apply tracking-wide;
+    @apply hover:shadow-md;
+    @apply hover:cursor-pointer;
+    @apply bg-gray-100;
+    @apply ring-gray-400;
+    @apply text-slate-700;
+    @apply hover:shadow-slate-400;
+    @apply hover:text-slate-900;
+    /* Dark Mode */
+    @apply dark:bg-slate-600;
+    @apply dark:ring-slate-500;
+    @apply dark:text-slate-200;
+    @apply dark:hover:shadow-slate-800;
+    @apply dark:hover:text-slate-300;
+  }
 
-.travel p {
-  min-width: 300px;
-  max-width: 640px;
-  text-align: start;
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: #232d3f;
-  margin-bottom: 0;
-  margin-top: 0;
-}
+  .filtering_search {
+    @apply col-start-3;
+    @apply flex;
+    @apply flex-row;
+    @apply items-center;
+    @apply justify-end;
+    @apply space-x-1;
+  }
 
-.travel button.deleteButton {
-  margin-left: 1%;
-  margin-bottom: 1%;
-  margin-right: 2%;
-  background: transparent;
-  border: 1px solid transparent;
-}
+  .filtering_search input {
+    @apply ring-2;
+    @apply text-sm;
+    @apply px-2;
+    @apply py-1;
+    @apply rounded;
+    @apply w-48;
+    @apply bg-gray-200;
+    @apply ring-gray-400;
+    @apply text-slate-700;
+    @apply font-semibold;
+    @apply tracking-wide;
+    /* Dark Mode */
+    @apply dark:bg-slate-600;
+    @apply dark:ring-slate-500;
+    @apply dark:text-slate-100;
+  }
 
-.travel button.deleteButton:hover {
-  border-color: black;
-  border-radius: 10px;
-  box-shadow: 0px 0px 21px -7px rgba(0, 0, 0, 0.3);
-  color:#292f36
-}
+  .filtering_search input::placeholder {
+    @apply font-semibold;
+    @apply tracking-widest;
+    @apply text-slate-600;
+    /* Dark Mode */
+    @apply dark:text-slate-200;
+  }
 
-.travel button.updateButton {
-  background: transparent;
-  border: 0.6px solid transparent;
-}
+  .input_base {
+    @apply ring-2;
+    @apply text-sm;
+    @apply px-2;
+    @apply py-1;
+    @apply rounded;
+    @apply w-52;
+    /* Dark Mode */
+    @apply dark:bg-slate-600;
+    @apply dark:ring-slate-500;
+    @apply dark:text-slate-100;
+  }
 
-.travel button.updateButton:hover {
-  border-color: black;
-  border-radius: 10px;
-  box-shadow: 0px 0px 21px -7px rgba(0, 0, 0, 0.3);
-  color:#292f36
-}
+  .travels {
+    @apply bg-gradient-to-b;
+    @apply w-5/6;
+    @apply shadow-md;
+    @apply overflow-y-auto;
+    @apply h-2/3;
+    @apply lg:w-128;
+    @apply rounded-2xl;
+    @apply pt-3;
+    @apply from-slate-100;
+    /* Dark Mode */
+    @apply dark:from-slate-700;
+    @apply dark:shadow-slate-900;
+  }
 
-.travel div.from{
-  margin-left: -1%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .card {
+    @apply bg-white;
+    @apply rounded-lg;
+    @apply shadow-md;
+    @apply overflow-hidden;
+    @apply shadow-gray-400;
+    /* Dark mode */
+    @apply dark:bg-gray-600;
+    @apply dark:shadow-gray-900;
+  }
 
-.travel div.to{
-  margin-left: 0.1%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .card_header {
+    @apply bg-gray-100;
+    @apply border-gray-200;
+    @apply w-full;
+    @apply p-4;
+    @apply border-b;
+    @apply text-base;
+    @apply font-bold;
+    @apply tracking-wide;
+    /* Dark mode */
+    @apply dark:bg-gray-700;
+    @apply dark:border-gray-800;
+    @apply dark:text-gray-100;
+  }
 
-.travel span.arrowIcon {
-  margin-left: 1%;
-  margin-right: 1%; 
-}
+  .card_body {
+    @apply p-4;
+    @apply text-sm;
+    @apply flex;
+    @apply flex-col;
+    @apply space-y-5;
+    @apply bg-gray-100;
+    /* Dark mode */
+    @apply dark:bg-slate-800;
+    @apply dark:text-slate-200;
+  }
 
-.Accordion-Header {
-  box-shadow: 0px 0px 21px -7px rgba(0, 0, 0, 0.3);
-}
+  .card_body input::placeholder {
+    @apply font-semibold;
+    @apply tracking-widest;
+    @apply text-gray-600;
+    /* Dark Mode */
+    @apply dark:text-gray-400;
+  }
 
-/* .AccordionCardBody {
-  background-color: red;
-} */
+  .card_footer {
+    @apply bg-gray-50;
+    @apply w-full;
+    @apply px-3;
+    @apply py-2;
+    @apply border-t;
+    @apply border-gray-100;
+    @apply text-base;
+    @apply font-bold;
+    @apply flex;
+    @apply flex-row;
+    @apply items-center;
+    @apply justify-start;
+    @apply space-x-7;
+    @apply bg-gray-200;
+    /* Dark mode */
+    @apply dark:bg-slate-600;
+    @apply dark:text-slate-100;
+  }
 
-.AccordionCardTitle {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
+  .new_travel {
+    @apply flex;
+    @apply flex-row;
+    @apply justify-end;
+    @apply items-center;
+    @apply w-5/6;
+    @apply lg:w-128;
+    @apply mt-2;
+    @apply py-2;
+  }
 
-.AccordionCardTitle div.distance{
-  margin-top: 1%;
-  margin-left: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .btn_primary {
+    @apply ring-2;
+    @apply text-sm;
+    @apply font-semibold;
+    @apply shadow-sm;
+    @apply px-4;
+    @apply py-1;
+    @apply select-none;
+    @apply rounded;
+    @apply transition ease-in-out;
+    @apply delay-100;
+    @apply hover:-translate-y-1;
+    @apply hover:scale-110;
+    @apply duration-300;
+    @apply tracking-widest;
+    @apply bg-gray-100;
+    @apply active:bg-gray-300;
+    @apply hover:bg-gray-200;
+    @apply shadow-gray-100;
+    @apply ring-gray-400;
+    @apply text-gray-800;
+    /* Dark Mode */
+    @apply dark:bg-slate-600;
+    @apply dark:active:bg-slate-900;
+    @apply dark:hover:bg-slate-700;
+    @apply dark:shadow-gray-800;
+    @apply dark:ring-slate-800;
+    @apply dark:text-slate-200;
+  }
 
-.AccordionCardTitle div.duration{
-  margin-left: 2%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .travels_footer {
+    @apply flex;
+    @apply justify-center;
+    @apply row-start-6;
+    @apply row-end-6;
+  }
 
-/* Scroll Bar */
-/* width */
-::-webkit-scrollbar {
-  width: 6px;
+  .btn_base {
+    @apply transition ease-in-out;
+    @apply delay-100;
+    @apply hover:-translate-y-1;
+    @apply hover:scale-110;
+    @apply duration-300;
+    @apply shadow-sm;
+    @apply text-slate-800;
+    @apply shadow-gray-500;
+    @apply active:bg-gray-300;
+    @apply hover:bg-gray-200;
+    /* Dark Mode */
+    @apply dark:text-slate-100;
+    @apply dark:shadow-gray-800;
+    @apply dark:active:bg-slate-900;
+    @apply dark:hover:bg-slate-700;
+  }
 }
+@layer base {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
 
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 15px;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #727f9b;
-  border-radius: 15px;
-}
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;    
+  }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #5d6d8d; 
-}
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300;
+    @apply rounded-full;
+    @apply border;
+    @apply dark:bg-gray-800;
+  }
 
-.inputModal {
-  margin-right: 2%;
-  border: 1px solid #DDDDDD;
-  outline: none;
-}
-
-.inputModal:focus {
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-  border: 1px solid rgba(81, 203, 238, 1);
-}
-.inputSpace {
-  margin-top: 10px;
-  text-align: center;
-  border: none;
-  height: 50px;
-  width: 200px;
-  box-shadow: 0px 0px 21px -7px rgba(114, 112, 112, 0.3);
-}
-
-input:focus {
-  outline: none;
-}
-
-.createTravelBtn {
-  background: linear-gradient(#1b263b, #36435c);
-  color: white;
-  border: none;
-  
-  width: 160px;
-  height: 50px;
-  border-radius: 100px;
-  margin-top: 10px;
-  margin-left: 639px;
-  
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.createTravelBtn:hover {
-  background: linear-gradient(#e3e7e7, #eef5f5);
-  color: black;
-}
-
-.btn-close {
-  display: none;
-}
-
-.filtering_container{
-  margin-top: -10px;
-  margin-bottom: 10px;
-  width: 800px;
-}
-
-.filtering_container input{
-  padding-left: 1%;
-  border: 1px solid #DDDDDD;
-  display: inline;
-  float: right;
-  border-radius: 5px 12px 12px 0px;
-}
-
-.filtering_container input:focus{
-  box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-  border: 1px solid rgba(81, 203, 238, 1);
-}
-
-.filtering_container select{
-  display: inline;
-  float: left;
-  border-radius: 5px 12px 0px 0px;
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+    @apply dark:bg-gray-600;
+  }
 }
